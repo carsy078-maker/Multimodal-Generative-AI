@@ -2,13 +2,13 @@
 
 본 프로젝트는 고품질 이미지 및 비디오 에셋의 일관성 있는 생성을 위해 **ComfyUI** 노드 기반으로 설계된 자동화 파이프라인입니다. 특히 8GB VRAM이라는 제한된 환경에서 14B급 대규모 모델을 안정적으로 구동하기 위한 **메모리 최적화 엔지니어링**에 초점을 맞추었습니다.
 
-## 핵심 기능 (Key Features)
+## 핵심 기능
 
 - **이미지-비디오 통합 워크플로우:** SDXL/Flux로 생성된 고해상도 이미지를 LTX-Video 및 WAN 모델과 연계하여 자연스러운 비디오로 변환하는 연속 추론 파이프라인을 구축했습니다.
 - **VLM 기반 지능형 피드백:** Qwen(Vision Language Model)을 파이프라인에 통합하여 생성된 에셋을 분석하고, 그 결과를 바탕으로 프롬프트를 자동 보정하는 폐쇄 루프(Closed-loop) 시스템을 구현했습니다.
 - **노드 기반 자동화:** 복잡한 생성 과정을 개별 노드로 모듈화하여 유지보수성을 높이고, 반복적인 작업 없이 대량의 에셋을 생성할 수 있도록 워크플로우를 최적화했습니다.
 
-## 기술 스택 (Tech Stack)
+## 기술 스택
 
 - **AI Engine:** ComfyUI
 - **Generative Models:** Flux.1, SDXL, WAN (14B), LTX-Video
@@ -16,7 +16,7 @@
 - **Hardware Context:** NVIDIA RTX 3070 (8GB VRAM)
 - **Format:** API JSON Workflow, Python
 
-## 시스템 아키텍처 (Architecture)
+## 시스템 아키텍처
 
 
 
@@ -28,7 +28,7 @@
 
 ---
 
-## 기술적 도전 및 최적화 (Optimization & Troubleshooting)
+## 기술적 도전 및 최적화
 
 ### 1. 8GB VRAM 환경에서의 대규모 모델(14B) 구동 최적화
 - **문제 사항:** WAN(14B)과 같은 대규모 비디오 모델 구동 시 VRAM 부족으로 인한 OOM(Out of Memory) 및 시스템 스와핑 발생으로 생성 속도가 급격히 저하되었습니다.
@@ -41,7 +41,7 @@
 
 ---
 
-## 실행 가이드 (Quick Start)
+## 실행 가이드
 
 <Steps>
 {/* Reason: ComfyUI 워크플로우는 설치 순서와 모델 배치가 틀리면 실행되지 않으므로 순서가 매우 중요합니다. */}
