@@ -81,29 +81,21 @@ flowchart TD
 
 ## 실행 가이드
 
-<Steps>
-{/* Reason: ComfyUI 워크플로우는 설치 순서와 모델 배치가 틀리면 실행되지 않으므로 순서가 매우 중요합니다. */}
-  <Step title="ComfyUI 환경 구성" subtitle="의존성 설치">
-    로컬 환경에 ComfyUI를 설치하고 필수 패키지를 설치합니다.
-    ```bash
-    pip install -r requirements.txt
-    ```
-    이후 필수 커스텀 노드(Manager, VideoHelperSuite 등)를 설치합니다.
-  </Step>
-  <Step title="모델 체크포인트 배치" subtitle="models 폴더">
-    `Flux`, `WAN`, `Qwen` 등 사용되는 모델 가중치 파일들을 지정된 경로에 배치합니다. (양자화 버전 권장)
-  </Step>
-  <Step title="서버 실행 및 워크플로우 로드" subtitle="JSON Import">
-    ComfyUI 서버를 로컬에서 실행합니다 (기본값: `http://127.0.0.1:8188`).
-    `workflows/` 폴더 내의 API JSON 파일을 ComfyUI 화면에 드래그하여 로드하거나 API를 통해 실행할 수 있습니다.
-  </Step>
-  <Step title="파이프라인 실행" subtitle="Queue Prompt">
-    프롬프트를 입력하고 'Queue Prompt'를 누르거나 파이썬 스크립트를 통해 자동화된 프로세스를 시작합니다.
-    ```bash
-    python scripts/workflow_api_runner.py
-    ```
-  </Step>
-</Steps>
+## 실행 가이드 (Quick Start)
+
+ComfyUI 워크플로우는 설치 순서와 모델 배치가 틀리면 실행되지 않으므로 아래 순서를 반드시 지켜야 합니다.
+
+### 1. ComfyUI 환경 구성
+로컬 환경에 ComfyUI를 설치하고 `requirements.txt`에 명시된 필수 커스텀 노드(Manager, VideoHelperSuite 등)를 설치합니다.
+
+### 2. 모델 체크포인트 배치
+`Flux`, `WAN`, `Qwen` 등 파이프라인에 사용되는 모델 가중치 파일들을 `models/` 내의 지정된 경로에 배치합니다. (VRAM 최적화를 위해 양자화 버전 사용 권장)
+
+### 3. 워크플로우 로드
+`workflows/` 폴더 내에 있는 API JSON 파일을 ComfyUI 화면에 드래그하여 로드합니다.
+
+### 4. 파이프라인 실행
+프롬프트를 입력하고 'Queue Prompt'를 눌러 이미지 생성부터 비디오 변환까지의 자동화 프로세스를 시작합니다.
 
 ---
 
