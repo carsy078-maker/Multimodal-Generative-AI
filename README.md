@@ -30,6 +30,45 @@
 4.  **Auto-Correction:** 분석 결과를 바탕으로 프롬프트를 재작성하여 이미지 품질 보정
 5.  **Video Synthesis:** WAN/LTX-Video 모델을 통한 동적 비디오 변환 및 업스케일링
 
+graph TD
+    %% 노드 스타일 정의
+    classDef input fill:#f9f2f4,stroke:#d0a9b5,stroke-width:2px,color:#333;
+    classDef model fill:#e6f7ff,stroke:#91d5ff,stroke-width:2px,color:#333;
+    classDef process fill:#f6ffed,stroke:#b7eb8f,stroke-width:2px,color:#333;
+    classDef highlight fill:#fff1f0,stroke:#ffa39e,stroke-width:3px,color:#cf1322;
+    classDef output fill:#fffb8f,stroke:#d4b106,stroke-width:2px,color:#333;
+
+    %% 1. 입력 단계
+    A[사용자 텍스트 프롬프트]:::input --> B
+
+    %% 2. 이미지 생성 단계 (MainWorkflowShare.json)
+    subgraph "Phase 1: Image Generation (Flux / SDXL)"
+        B(고해상도 베이스 이미지 생성):::model
+        C[⭐ Int8 양자화 적용 VRAM 최적화]:::highlight
+        B -.-> C
+    end
+
+    %% 3. 피드백 루프 (VLM 분석)
+    subgraph "Phase 2: Intelligent Feedback Loop"
+        D(Florence-2 / Qwen VLM 이미지 분석):::model
+        E[프롬프트 자동 보정 및 재작성]:::process
+        B -->|생성된 이미지 전달| D
+        D -->|캡션 추출| E
+    end
+
+    %% 4. 비디오 생성 단계 (i2v.json)
+    subgraph "Phase 3: Video Synthesis (WAN 2.1 14B)"
+        F(Image to Video 변환):::model
+        G[⭐ Spatial Tiling 8GB VRAM 최적화]:::highlight
+        E -->|보정된 프롬프트 전달| F
+        B -->|베이스 이미지 전달| F
+        F -.-> G
+    end
+
+    %% 5. 출력 단계
+    H[최종 비디오 에셋 출력 .mp4]:::output
+    F -->|VAE Decode| H
+
 ---
 
 ## 기술적 도전 및 최적화
@@ -72,44 +111,5 @@
 </Steps>
 
 ---
-
-graph TD
-    %% 노드 스타일 정의
-    classDef input fill:#f9f2f4,stroke:#d0a9b5,stroke-width:2px,color:#333;
-    classDef model fill:#e6f7ff,stroke:#91d5ff,stroke-width:2px,color:#333;
-    classDef process fill:#f6ffed,stroke:#b7eb8f,stroke-width:2px,color:#333;
-    classDef highlight fill:#fff1f0,stroke:#ffa39e,stroke-width:3px,color:#cf1322;
-    classDef output fill:#fffb8f,stroke:#d4b106,stroke-width:2px,color:#333;
-
-    %% 1. 입력 단계
-    A[사용자 텍스트 프롬프트]:::input --> B
-
-    %% 2. 이미지 생성 단계 (MainWorkflowShare.json)
-    subgraph "Phase 1: Image Generation (Flux / SDXL)"
-        B(고해상도 베이스 이미지 생성):::model
-        C[⭐ Int8 양자화 적용 VRAM 최적화]:::highlight
-        B -.-> C
-    end
-
-    %% 3. 피드백 루프 (VLM 분석)
-    subgraph "Phase 2: Intelligent Feedback Loop"
-        D(Florence-2 / Qwen VLM 이미지 분석):::model
-        E[프롬프트 자동 보정 및 재작성]:::process
-        B -->|생성된 이미지 전달| D
-        D -->|캡션 추출| E
-    end
-
-    %% 4. 비디오 생성 단계 (i2v.json)
-    subgraph "Phase 3: Video Synthesis (WAN 2.1 14B)"
-        F(Image to Video 변환):::model
-        G[⭐ Spatial Tiling 8GB VRAM 최적화]:::highlight
-        E -->|보정된 프롬프트 전달| F
-        B -->|베이스 이미지 전달| F
-        F -.-> G
-    end
-
-    %% 5. 출력 단계
-    H[최종 비디오 에셋 출력 .mp4]:::output
-    F -->|VAE Decode| H
 
 > **Note:** 본 프로젝트의 모든 워크플로우는 API 호출이 가능한 JSON 포맷으로 저장되어 있어, FastAPI 등 외부 백엔드 서버와의 연동이 용이합니다.
