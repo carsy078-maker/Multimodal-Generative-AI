@@ -63,7 +63,7 @@ flowchart TD
 
     H[최종 비디오 에셋 출력 .mp4]:::output
     F -->|VAE Decode| H
-
+```
 ---
 
 ## 기술적 도전 및 최적화
