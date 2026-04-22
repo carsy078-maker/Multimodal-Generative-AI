@@ -73,9 +73,7 @@
 
 ---
 
-> **Note:** 본 프로젝트의 모든 워크플로우는 API 호출이 가능한 JSON 포맷으로 저장되어 있어, FastAPI 등 외부 백엔드 서버와의 연동이 용이합니다.
->
-> graph TD
+graph TD
     %% 노드 스타일 정의
     classDef input fill:#f9f2f4,stroke:#d0a9b5,stroke-width:2px,color:#333;
     classDef model fill:#e6f7ff,stroke:#91d5ff,stroke-width:2px,color:#333;
@@ -113,3 +111,5 @@
     %% 5. 출력 단계
     H[최종 비디오 에셋 출력 .mp4]:::output
     F -->|VAE Decode| H
+
+> **Note:** 본 프로젝트의 모든 워크플로우는 API 호출이 가능한 JSON 포맷으로 저장되어 있어, FastAPI 등 외부 백엔드 서버와의 연동이 용이합니다.
